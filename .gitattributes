@@ -1,0 +1,13 @@
+* text=auto
+*.adoc text
+*.config text
+*.java text
+*.json text
+*.kts text
+*.properties text
+BUILD text
+WORKSPACE text
+*.bat text eol=crlf
+*.bin filter=lfs diff=lfs merge=lfs -text
+*.png filter=lfs diff=lfs merge=lfs -text
+*.jar filter=lfs diff=lfs merge=lfs -text

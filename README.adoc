@@ -1,0 +1,332 @@
+= Bean Validation Benchmark
+:toc: macro
+:srcdir: src/main/java/com/fillmore_labs/example/validation
+:testdir: src/test/java/com/fillmore_labs/example/validation
+
+== Introduction
+
+In a customer project I came across _Get Your Hands Dirty on Clean Architecture_ <<gyhd>>, and since
+value objects https://github.com/fillmore-labs/value-comparison[seem to be] my thing and I had seen
+Dan Bergh Johnsson excellent presentation <<pov>>, of course my interest was piqued.
+
+To get that out of the way first: This is not a review of the book, just a few notes on some of the
+code from chapter 4 _Implementing a Use Case_.
+
+toc::[]
+
+== Motivation
+
+In the subchapter _Validating Input_ <<gyhd>> uses a `SelfValidating` class, implemented like this:
+
+[source,java,linenums]
+----
+public abstract class SelfValidating<T> {
+  private Validator validator;
+
+  public SelfValidating() {
+    ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+    validator = factory.getValidator();
+  }
+
+  protected void validateSelf() {
+    Set<ConstraintViolation<T>> violations = validator.validate((T) this);
+    if (!violations.isEmpty()) {
+      throw new ConstraintViolationException(violations);
+    }
+  }
+}
+----
+
+The first thing you probably see is the interesting use of generics, only to make an unnecessary
+unchecked cast. Due to type erasure everything is gone during runtime, but the purpose is unclear.
+
+The second thing is the creation of a Jakarta Bean Validation <<jbv>> `ValidatorFactory` for _every_
+object. The
+https://beanvalidation.org/2.0/spec/#validationapi-bootstrapping-validatorfactory[documentation]
+recommends to "`__cache ValidatorFactory objects and reuse them for optimal performances__ [sic]`"
+and remarks that building a `ValidatorFactory` can be
+https://beanvalidation.org/2.0/spec/#validationapi-bootstrapping-examples[expensive].
+
+So, let's benchmark this, shall we?
+
+== Structure
+
+We implement `SelfValidating` like presented in the book in package
+`link:{srcdir}/self_validating[self_validating]`.
+
+Then we try to fix some problems in `link:{srcdir}/validated[validated]`, see
+xref:_discussion[Discussion].
+
+An alternative is implemented in `link:{srcdir}/immutables[immutables]`.
+
+For benchmark purposes we also use a `link:{srcdir}/pojo[pojo]` and reimplement `self_validating`
+and `validated` with
+https://jakarta.ee/specifications/bean-validation/3.0/[Jakarta Bean Validation 3.0] in
+`link:{srcdir}/jee9[jee9]`.
+
+[#_discussion]
+== Discussion
+
+In _Validating Input_ <<gyhd>> we read "`__In the Java world, the de facto standard for [validation
+checks] is the Bean Validation API.__`" Well, for Java Beans maybe. There are good alternatives,
+like Guava's https://github.com/google/guava/wiki/PreconditionsExplained[Preconditions]. And
+interdependencies are *much* easier to express.
+
+Nullability in Java is a much-discussed issue, and is in most cases best handled via static
+analysis. There are tools like the
+https://checkerframework.org/manual/#nullness-checker[Checker Framework] and
+https://github.com/uber/NullAway[NullAway], IntelliJ IDEA supports
+https://www.jetbrains.com/help/idea/nullable-and-notnull-annotations.html[real time checks], even
+the Spring Framework
+https://docs.spring.io/spring-framework/docs/current/reference/html/core.html#null-safety[provides
+annotations].
+
+None of them is supported by Jakarta Bean Validation, of course. Also, tools like
+https://github.com/google/auto/blob/master/value/userguide/index.md[AutoValue] and
+http://immutables.github.io[Immutables] provide null-safety by default.
+
+Therefore, we don't use `@NotNull` for benchmarking, since it would be an unfair comparison.
+
+In this example we model a person to have a given name with at least on character (might be blank)
+and an optional surname with at least one character when present. In practice it is debatable how
+this would improve your business logic and whether just null-safety and input validation at the
+external API would be better. To https://twitter.com/odrotbohm/status/1055031632917340160[quote]
+Oliver Drotbohm: "`__I think [Bean Validation is] absolutely awesome for input validation. In a
+*domain model* you don't deal with validation. You implement business constraints. That's a
+different story and I often see projects where it's been applied blindly because it looks
+convenient.__`"
+
+But we are here to benchmark validation, not write business logic, so this should suffice.
+
+=== Improving the Code
+
+If we look at the https://beanvalidation.org/2.0/spec/#validationapi-bootstrapping-examples[example]
+we see that we should cache the `ValidatorFactory` somewhere and close it at application shutdown.
+Usually, a framework does this for us, and we acquire a `Validator` via dependency injection.
+
+We might be tempted to semi-fix the issue by creating some kind of global static variable,
+initialized at application start up, but there are additional problems with inheritance.
+
+When we define a non-final, self-validated class and inherit a self-validated class from it, we are
+effectively prevented to instantiate the subclass, since the superclass calls `validateSelf()`
+on a _partially constructed_ object, demonstrated in
+`link:{testdir}/self_validating/inheritance/MovieTicketTest.java[a unit test]`. While this is by all
+means bad programming style and our tools warn us about it, it is nothing I haven't seen in
+practice and is generally very error prone.
+
+Also, we are forced to write a constructor with a lot of boilerplate, just to call one simple
+function, which could easily be forgotten.
+
+So, let's move the validation into a factory and make sure that no one else could instantiate our
+object.
+
+There is an additional problem: Hibernate (the Jakarta Bean Validation we are using)
+https://docs.jboss.org/hibernate/validator/6.2/reference/en-US/html_single/#_field_level_constraints[documentation]
+requires that "`__When validating byte code enhanced objects, property level constraints should be
+used, ...__`"
+
+Since Project Lombok is clearly _byte code enhancing_, we need to annotate the _properties_. Which
+forces us to use JavaBeans-style naming conventions and the
+https://projectlombok.org/features/experimental/onX[experimental] `onMethod_` option (the
+underscore is important).
+
+We end up with
+[source,java,linenums]
+----
+@Value
+@AllArgsConstructor(access = PACKAGE)
+@Accessors(fluent = false)
+public class Person {
+  @Getter(onMethod_ = @NotEmpty)
+  String givenName;
+
+  @Nullable String surname;
+
+  public Optional<@Size(min = 1) String> getSurname() {
+    return Optional.ofNullable(surname);
+  }
+}
+----
+which is somewhat ugly, but at least mostly correct.
+
+=== Alternatives
+
+In _The Power of Constructors_ <<gyhd>> we read "`__good IDEs help with parameter name hints__`".
+
+Yes, if you never did a side-by-side diff or read code outside *your* IDE.
+
+We follow _Effective Java_ <<ej>> "`__Item 2: Consider a builder when faced with many constructor
+parameters__`". Here we have only two, but we already see the improvements when confronted with an
+optional surname.
+
+[source,java,linenums]
+----
+@Value.Immutable
+public abstract class Person implements WithPerson {
+  Person() {}
+
+  public static Builder builder() {
+    return new Builder();
+  }
+
+  public abstract String givenName();
+
+  public abstract Optional<String> surname();
+
+  @Value.Check
+  void check() {
+    var givenNameIsEmpty = givenName().isEmpty();
+    var surnameIsPresentAndEmpty = surname().map(String::isEmpty).orElse(false);
+    checkState(!givenNameIsEmpty, "Given name must not be empty");
+    checkState(!surnameIsPresentAndEmpty, "Surname must not be empty");
+  }
+
+  public static final class Builder extends ImmutablePerson.Builder {}
+}
+----
+The code is a little longer, but pretty readable, correct and we don't need to write a factory.
+
+Also, when API changes are a problem ("`__So, why not let the compiler guide us?__`" <<gyhd>>) we
+could use a http://immutables.github.io/immutable.html#staged-builder[staged builder].
+
+== Benchmarking
+
+=== Prerequisites
+
+You need https://github.com/bazelbuild/bazelisk[Bazelisk] installed, with https://brew.sh[HomeBrew]
+just use [source,shell]`brew install bazelbuild/tap/bazelisk`.
+See also https://docs.bazel.build/versions/4.0.0/install-bazelisk.html[Installing Bazel using
+Bazelisk].
+
+=== Running
+
+Run the benchmark with
+
+[source,shell]
+----
+bazel run //:benchmark
+----
+
+or
+
+[source,shell]
+----
+bazel run //:jee9-benchmark
+----
+
+for the Jakarta Bean Validation 3.0 variant.
+
+If you have a local JDK ≥ 11 installed you could also use Gradle:
+[source,shell]
+----
+./gradlew :run
+----
+
+=== Tests
+
+To run all tests, use
+
+[source,shell]
+----
+bazel test //...
+----
+
+== Results
+
+JMH Java microbenchmarks are hard to do correctly, and I don't assert that I'm an expert in that
+craft. Nevertheless, these numbers give us an idea of the performance characteristics.
+
+Sample run on an Intel(R) Xeon(R) E3-1245 v2; 32GB RAM; Linux Kernel 5.4.0:
+
+.JEE8 Benchmark
+[cols="h,^1,>1,>e,>1,^1"]
+|===
+|Benchmark |Mode |Cnt |Score |Error |Units
+
+|Bench.immutables
+|avgt
+|5
+|4.639
+|± 0.090
+|ns/op
+
+|Bench.pojo
+|avgt
+|5
+|5.505
+|± 0.055
+|ns/op
+
+|Bench.selfValidating
+|avgt
+|5
+|1386941.125
+|± 10838.886
+|ns/op
+
+|Bench.validated
+|avgt
+|5
+|580.868
+|± 8.928
+|ns/op
+
+|===
+
+.JEE9 Benchmark
+[cols="h,^1,>1,>e,>1,^1"]
+|===
+|Benchmark |Mode |Cnt |Score |Error |Units
+
+|Bench.immutables
+|avgt
+|5
+|4.662
+|± 0.120
+|ns/op
+
+|Bench.pojo
+|avgt
+|5
+|5.495
+|± 0.028
+|ns/op
+
+|Bench.selfValidating
+|avgt
+|5
+|1385860.145
+|± 11741.320
+|ns/op
+
+|Bench.validated
+|avgt
+|5
+|1151.524
+|± 5.205
+|ns/op
+
+|===
+
+Interestingly enough Immutables is faster than the POJO implementation, but both are more than a
+factor of 100 faster than Jakarta Bean Validation and more than 250,000 faster that the approach of
+_Validating Input_ <<gyhd>>.
+
+While 0.5 μs/message overhead in your application might be acceptable, 1.3 ms will be noticeable
+under load.
+
+[bibliography]
+== References
+
+* [[[ej]]] Joshua Bloch.
+https://www.pearson.com/us/higher-education/program/Bloch-Effective-Java-3rd-Edition/PGM1763855.html[Effective Java, 3rd Edition].
+Addison-Wesley Professional. 2018.
+* [[[gyhd]]] Tom Hombergs.
+https://www.packtpub.com/product/get-your-hands-dirty-on-clean-architecture/9781839211966[Get Your
+Hands Dirty on Clean Architecture].
+Packt. 2019.
+* [[[pov]]] Dan Bergh Johnsson.
+https://www.infoq.com/presentations/Value-Objects-Dan-Bergh-Johnsson/[Power of Value - Power Use of
+Value Objects in Domain Driven Design]. QCon London. 2009.
+* [[[jbv]]] Eclipse Foundation.
+https://beanvalidation.org/2.0/spec/[Jakarta Bean Validation 2.0 specification]. 2019.
