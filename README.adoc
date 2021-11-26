@@ -133,6 +133,14 @@ underscore is important).
 We end up with
 [source,java,linenums]
 ----
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
+import java.util.Optional;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Value;
+import lombok.experimental.Accessors;
+
 @Value
 @AllArgsConstructor(access = PACKAGE)
 @Accessors(fluent = false)
@@ -140,7 +148,7 @@ public class Person {
   @Getter(onMethod_ = @NotEmpty)
   String givenName;
 
-  @Nullable String surname;
+  String surname;
 
   public Optional<@Size(min = 1) String> getSurname() {
     return Optional.ofNullable(surname);
@@ -161,20 +169,18 @@ optional surname.
 
 [source,java,linenums]
 ----
+import java.util.Optional;
+import org.immutables.value.Value;
+
+@Value.Style(optionalAcceptNullable = true)
 @Value.Immutable
-public abstract class Person implements WithPerson {
-  Person() {}
-
-  public static Builder builder() {
-    return new Builder();
-  }
-
+public abstract class Person {
   public abstract String givenName();
 
   public abstract Optional<String> surname();
 
   @Value.Check
-  void check() {
+  final void check() {
     var givenNameIsEmpty = givenName().isEmpty();
     var surnameIsPresentAndEmpty = surname().map(String::isEmpty).orElse(false);
     checkState(!givenNameIsEmpty, "Given name must not be empty");
