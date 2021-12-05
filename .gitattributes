@@ -4,6 +4,7 @@
 *.java text
 *.json text
 *.kts text
+*.bzl text
 *.properties text
 BUILD text -linguist-detectable
 WORKSPACE text -linguist-detectable

@@ -1,10 +1,12 @@
 .*
+!/.bazelignore
 !/.bazelrc
 !/.bazelversion
-!/.bazelignore
+!/.buildkite/
 !/.editorconfig
 !/.envrc
 !/.gitattributes
+!/.github/
 !/.gitignore
 !/.yamllint
 # idea
@@ -13,3 +15,4 @@ out/
 # project specific
 /bazel-*
 gradle-*/
+bin/

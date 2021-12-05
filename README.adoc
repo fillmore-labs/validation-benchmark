@@ -3,6 +3,9 @@
 :srcdir: src/main/java/com/fillmore_labs/example/validation
 :testdir: src/test/java/com/fillmore_labs/example/validation
 
+image:https://badge.buildkite.com/bda46a80a33133c693ec068eb0491956fec0c2ed354fdf0756.svg?branch=main[title="Buildkite build status",link=https://buildkite.com/fillmore-labs/bean-validation-benchmark]
+image:https://img.shields.io/github/license/fillmore-labs/validation-benchmark[title="License",link=https://github.com/fillmore-labs/validation-benchmark/blob/main/LICENSE]
+
 == Introduction
 
 In a customer project I came across _Get Your Hands Dirty on Clean Architecture_ <<gyhd>>, and since
