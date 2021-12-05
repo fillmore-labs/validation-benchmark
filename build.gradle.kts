@@ -59,7 +59,7 @@ dependencies {
   implementation("com.google.guava:guava:31.0.1-jre")
   implementation("jakarta.validation:jakarta.validation-api:2.0.2")
   runtimeOnly("org.glassfish:jakarta.el:3.0.4")
-  runtimeOnly("org.hibernate.validator:hibernate-validator:6.2.0.Final")
+  runtimeOnly("org.hibernate.validator:hibernate-validator:7.0.1.Final")
   runtimeOnly("org.ow2.asm:asm:9.2")
 
   testImplementation("junit:junit:4.13.2")
