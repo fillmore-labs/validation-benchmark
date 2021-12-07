@@ -53,7 +53,7 @@ dependencies {
   implementation("org.openjdk.jmh:jmh-core:1.33")
   annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.33")
 
-  compileOnly("org.checkerframework:checker-qual:3.19.0")
+  compileOnly("org.checkerframework:checker-qual:3.20.0")
   testCompileOnly("org.checkerframework:checker-qual:3.19.0")
 
   implementation("com.google.guava:guava:31.0.1-jre")
