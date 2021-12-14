@@ -202,10 +202,30 @@ could use a http://immutables.github.io/immutable.html#staged-builder[staged bui
 
 === Prerequisites
 
-You need https://github.com/bazelbuild/bazelisk[Bazelisk] installed, with https://brew.sh[HomeBrew]
-just use [source,shell]`brew install bazelbuild/tap/bazelisk`.
-See also https://docs.bazel.build/versions/4.0.0/install-bazelisk.html[Installing Bazel using
-Bazelisk].
+You need https://github.com/bazelbuild/bazelisk[Bazelisk] installed, see also
+https://docs.bazel.build/versions/main/install-bazelisk.html[Installing Bazel using Bazelisk].
+
+==== macOS
+
+Using https://brew.sh[HomeBrew] enter
+
+[source,shell]
+brew install bazelisk
+
+==== Windows
+
+Using https://chocolatey.org[Chocolatey] enter
+
+[source,shell]
+choco install bazelisk
+
+Enable developer mode:
+
+. Open Windows settings
+. Go to “Update & security”, then “For developers”
+. Under “Developer Mode” section enable “Install apps from any source, including loose files”.
+
+or run with administrator privileges.
 
 === Running
 
@@ -213,14 +233,14 @@ Run the benchmark with
 
 [source,shell]
 ----
-bazel run //:benchmark
+bazelisk run //:benchmark
 ----
 
 or
 
 [source,shell]
 ----
-bazel run //:jee9-benchmark
+bazelisk run //:jee9-benchmark
 ----
 
 for the Jakarta Bean Validation 3.0 variant.
@@ -237,7 +257,7 @@ To run all tests, use
 
 [source,shell]
 ----
-bazel test //...
+bazelisk test //src/test/...
 ----
 
 == Results
