@@ -57,8 +57,8 @@ dependencies {
   implementation("org.openjdk.jmh:jmh-core:1.33")
   annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.33")
 
-  compileOnly("org.checkerframework:checker-qual:3.20.0")
-  testCompileOnly("org.checkerframework:checker-qual:3.20.0")
+  compileOnly("org.checkerframework:checker-qual:3.21.0")
+  testCompileOnly("org.checkerframework:checker-qual:3.21.0")
 
   implementation("com.google.guava:guava:31.0.1-jre")
   implementation("jakarta.validation:jakarta.validation-api:3.0.1")
@@ -69,5 +69,5 @@ dependencies {
   testImplementation("junit:junit:4.13.2")
   testImplementation("com.google.truth:truth:1.1.3")
   testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.3")
-  testImplementation("nl.jqno.equalsverifier:equalsverifier:3.8")
+  testImplementation("nl.jqno.equalsverifier:equalsverifier:3.8.1")
 }

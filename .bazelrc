@@ -1,4 +1,8 @@
 build --javabase=@bazel_tools//tools/jdk:remote_jdk11
 build --java_toolchain=//toolchain:toolchain_java11
 
+build:ci --noshow_progress
+build:ci --output_filter=^//
+test:ci --test_output=errors
+
 try-import %workspace%/user.bazelrc
