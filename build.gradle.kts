@@ -51,7 +51,7 @@ dependencies {
   annotationProcessor("org.immutables:value-processor:2.9.0-rc1")
 
   implementation("org.openjdk.jmh:jmh-core:1.33")
-  annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.33")
+  annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.34")
 
   compileOnly("org.checkerframework:checker-qual:3.20.0")
   testCompileOnly("org.checkerframework:checker-qual:3.20.0")
