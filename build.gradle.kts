@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
   application
-  id("com.github.ben-manes.versions") version "0.39.0"
+  id("com.github.ben-manes.versions") version "0.41.0"
   id("se.patrikerdes.use-latest-versions") version "0.2.18"
 }
 
@@ -50,11 +50,11 @@ dependencies {
   compileOnly("org.immutables:value-annotations:2.9.0-rc1")
   annotationProcessor("org.immutables:value-processor:2.9.0-rc1")
 
-  implementation("org.openjdk.jmh:jmh-core:1.33")
-  annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.33")
+  implementation("org.openjdk.jmh:jmh-core:1.34")
+  annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.34")
 
-  compileOnly("org.checkerframework:checker-qual:3.21.0")
-  testCompileOnly("org.checkerframework:checker-qual:3.21.0")
+  compileOnly("org.checkerframework:checker-qual:3.21.1")
+  testCompileOnly("org.checkerframework:checker-qual:3.21.1")
 
   implementation("com.google.guava:guava:31.0.1-jre")
   implementation("jakarta.validation:jakarta.validation-api:2.0.2")
@@ -65,7 +65,7 @@ dependencies {
   testImplementation("junit:junit:4.13.2")
   testImplementation("com.google.truth:truth:1.1.3")
   testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.3")
-  testImplementation("nl.jqno.equalsverifier:equalsverifier:3.8.1")
+  testImplementation("nl.jqno.equalsverifier:equalsverifier:3.8.2")
 }
 
 tasks.withType<DependencyUpdatesTask> {
