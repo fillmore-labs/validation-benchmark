@@ -9,7 +9,9 @@ import lombok.Value;
 import lombok.experimental.NonFinal;
 
 @SuppressWarnings({
+  "MissingBraces",
   "MultiVariableDeclaration",
+  "SameNameButDifferent",
   "UnnecessarilyFullyQualified",
   "Var",
   "allcheckers:type.anno.before.modifier",

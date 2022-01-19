@@ -51,8 +51,8 @@ dependencies {
   compileOnly("org.projectlombok:lombok:1.18.22")
   annotationProcessor("org.projectlombok:lombok:1.18.22")
 
-  compileOnly("org.immutables:value-annotations:2.9.0-rc1")
-  annotationProcessor("org.immutables:value-processor:2.9.0-rc1")
+  compileOnly("org.immutables:value-annotations:2.9.0")
+  annotationProcessor("org.immutables:value-processor:2.9.0")
 
   implementation("org.openjdk.jmh:jmh-core:1.34")
   annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.34")

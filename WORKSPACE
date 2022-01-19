@@ -1,5 +1,7 @@
 workspace(name = "com_fillmore_labs_validation_benchmark")
 
+register_toolchains("//toolchain:toolchain_java11_definition")
+
 load("@bazel_tools//tools/build_defs/repo:http.bzl", "http_archive")
 
 # ---
@@ -27,8 +29,8 @@ maven_install(
         "org.checkerframework:checker:3.21.1",
         "org.glassfish:jakarta.el:3.0.4",
         "org.hibernate.validator:hibernate-validator:6.2.1.Final",
-        "org.immutables:value-annotations:2.9.0-rc1",
-        "org.immutables:value-processor:2.9.0-rc1",
+        "org.immutables:value-annotations:2.9.0",
+        "org.immutables:value-processor:2.9.0",
         "org.openjdk.jmh:jmh-core:1.34",
         "org.openjdk.jmh:jmh-generator-annprocess:1.34",
         "org.ow2.asm:asm:9.2",

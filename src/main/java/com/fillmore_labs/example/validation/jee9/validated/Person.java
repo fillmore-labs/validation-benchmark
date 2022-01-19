@@ -13,7 +13,9 @@ import lombok.experimental.Accessors;
 import org.checkerframework.checker.nullness.qual.Nullable;
 
 @SuppressWarnings({
+  "MissingBraces",
   "MultiVariableDeclaration",
+  "SameNameButDifferent",
   "UnnecessarilyFullyQualified",
   "Var",
   "allcheckers:type.anno.before",

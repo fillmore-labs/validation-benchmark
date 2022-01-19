@@ -7,8 +7,10 @@ import lombok.EqualsAndHashCode;
 import lombok.Value;
 
 @SuppressWarnings({
+  "MissingBraces",
   "MissingOverride",
   "MultiVariableDeclaration",
+  "SameNameButDifferent",
   "UnnecessarilyFullyQualified",
   "Var",
   "allcheckers:type.anno.before.modifier",
