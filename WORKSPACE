@@ -21,7 +21,7 @@ load("//toolchain:defs.bzl", "testonly_artifacts")
 
 maven_install(
     artifacts = [
-        "com.google.errorprone:error_prone_annotations:2.10.0",
+        "com.google.errorprone:error_prone_annotations:2.11.0",
         "com.google.guava:guava:31.0.1-jre",
         "jakarta.validation:jakarta.validation-api:2.0.2",
         "org.checkerframework:checker-qual:3.21.1",
@@ -39,7 +39,7 @@ maven_install(
         "com.google.truth.extensions:truth-java8-extension:1.1.3",
         "com.google.truth:truth:1.1.3",
         "junit:junit:4.13.2",
-        "nl.jqno.equalsverifier:equalsverifier:3.8.2",
+        "nl.jqno.equalsverifier:equalsverifier:3.8.3",
     ]),
     fetch_sources = True,
     maven_install_json = "//:maven_install.json",

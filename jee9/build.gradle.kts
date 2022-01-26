@@ -69,5 +69,5 @@ dependencies {
   testImplementation("junit:junit:4.13.2")
   testImplementation("com.google.truth:truth:1.1.3")
   testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.3")
-  testImplementation("nl.jqno.equalsverifier:equalsverifier:3.8.2")
+  testImplementation("nl.jqno.equalsverifier:equalsverifier:3.8.3")
 }
