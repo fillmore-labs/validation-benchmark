@@ -3,7 +3,7 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
   application
-  id("com.github.ben-manes.versions") version "0.41.0"
+  id("com.github.ben-manes.versions") version "0.42.0"
   id("se.patrikerdes.use-latest-versions") version "0.2.18"
 }
 
