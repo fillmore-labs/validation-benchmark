@@ -1,3 +1,4 @@
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 
 plugins {
@@ -70,4 +71,12 @@ dependencies {
   testImplementation("com.google.truth:truth:1.1.3")
   testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.3")
   testImplementation("nl.jqno.equalsverifier:equalsverifier:3.9")
+}
+
+tasks.withType<DependencyUpdatesTask> {
+  rejectVersionIf {
+    candidate.group == "org.glassfish"
+      && candidate.module == "jakarta.el"
+      && !candidate.version.startsWith("4.")
+  }
 }

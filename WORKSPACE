@@ -28,7 +28,7 @@ maven_install(
         "org.checkerframework:checker-util:3.21.2",
         "org.checkerframework:checker:3.21.2",
         "org.glassfish:jakarta.el:3.0.4",
-        "org.hibernate.validator:hibernate-validator:6.2.1.Final",
+        "org.hibernate.validator:hibernate-validator:6.2.2.Final",
         "org.immutables:value-annotations:2.9.0",
         "org.immutables:value-processor:2.9.0",
         "org.openjdk.jmh:jmh-core:1.34",
