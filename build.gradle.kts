@@ -56,7 +56,7 @@ dependencies {
   compileOnly("org.checkerframework:checker-qual:3.21.2")
   testCompileOnly("org.checkerframework:checker-qual:3.21.2")
 
-  implementation("com.google.guava:guava:31.0.1-jre")
+  implementation("com.google.guava:guava:31.1-jre")
   implementation("jakarta.validation:jakarta.validation-api:2.0.2")
   runtimeOnly("org.glassfish:jakarta.el:3.0.4")
   runtimeOnly("org.hibernate.validator:hibernate-validator:6.2.2.Final")
