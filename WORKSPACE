@@ -22,11 +22,11 @@ load("//toolchain:defs.bzl", "testonly_artifacts")
 maven_install(
     artifacts = [
         "com.google.errorprone:error_prone_annotations:2.11.0",
-        "com.google.guava:guava:31.0.1-jre",
+        "com.google.guava:guava:31.1-jre",
         "jakarta.validation:jakarta.validation-api:2.0.2",
-        "org.checkerframework:checker-qual:3.21.2",
-        "org.checkerframework:checker-util:3.21.2",
-        "org.checkerframework:checker:3.21.2",
+        "org.checkerframework:checker-qual:3.21.3",
+        "org.checkerframework:checker-util:3.21.3",
+        "org.checkerframework:checker:3.21.3",
         "org.glassfish:jakarta.el:3.0.4",
         "org.hibernate.validator:hibernate-validator:6.2.2.Final",
         "org.immutables:value-annotations:2.9.0",

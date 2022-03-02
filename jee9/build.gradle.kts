@@ -58,10 +58,10 @@ dependencies {
   implementation("org.openjdk.jmh:jmh-core:1.34")
   annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.34")
 
-  compileOnly("org.checkerframework:checker-qual:3.21.2")
-  testCompileOnly("org.checkerframework:checker-qual:3.21.2")
+  compileOnly("org.checkerframework:checker-qual:3.21.3")
+  testCompileOnly("org.checkerframework:checker-qual:3.21.3")
 
-  implementation("com.google.guava:guava:31.0.1-jre")
+  implementation("com.google.guava:guava:31.1-jre")
   implementation("jakarta.validation:jakarta.validation-api:3.0.1")
   runtimeOnly("org.glassfish:jakarta.el:4.0.2")
   runtimeOnly("org.hibernate.validator:hibernate-validator:7.0.2.Final")
@@ -78,5 +78,9 @@ tasks.withType<DependencyUpdatesTask> {
     candidate.group == "org.glassfish"
       && candidate.module == "jakarta.el"
       && !candidate.version.startsWith("4.")
+
+      || candidate.group == "org.hibernate.validator"
+      && candidate.module == "hibernate-validator"
+      && !candidate.version.startsWith("7.")
   }
 }
