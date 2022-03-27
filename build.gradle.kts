@@ -59,13 +59,13 @@ dependencies {
   implementation("com.google.guava:guava:31.1-jre")
   implementation("jakarta.validation:jakarta.validation-api:2.0.2")
   runtimeOnly("org.glassfish:jakarta.el:3.0.4")
-  runtimeOnly("org.hibernate.validator:hibernate-validator:6.2.2.Final")
+  runtimeOnly("org.hibernate.validator:hibernate-validator:6.2.3.Final")
   runtimeOnly("org.ow2.asm:asm:9.2")
 
   testImplementation("junit:junit:4.13.2")
   testImplementation("com.google.truth:truth:1.1.3")
   testImplementation("com.google.truth.extensions:truth-java8-extension:1.1.3")
-  testImplementation("nl.jqno.equalsverifier:equalsverifier:3.9")
+  testImplementation("nl.jqno.equalsverifier:equalsverifier:3.10")
 }
 
 tasks.withType<DependencyUpdatesTask> {
