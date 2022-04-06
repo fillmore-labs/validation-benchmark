@@ -55,17 +55,17 @@ dependencies {
   compileOnly("org.immutables:value-annotations:2.9.0")
   annotationProcessor("org.immutables:value-processor:2.9.0")
 
-  implementation("org.openjdk.jmh:jmh-core:1.34")
-  annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.34")
+  implementation("org.openjdk.jmh:jmh-core:1.35")
+  annotationProcessor("org.openjdk.jmh:jmh-generator-annprocess:1.35")
 
-  compileOnly("org.checkerframework:checker-qual:3.21.3")
-  testCompileOnly("org.checkerframework:checker-qual:3.21.3")
+  compileOnly("org.checkerframework:checker-qual:3.21.4")
+  testCompileOnly("org.checkerframework:checker-qual:3.21.4")
 
   implementation("com.google.guava:guava:31.1-jre")
   implementation("jakarta.validation:jakarta.validation-api:3.0.1")
   runtimeOnly("org.glassfish:jakarta.el:4.0.2")
   runtimeOnly("org.hibernate.validator:hibernate-validator:7.0.4.Final")
-  runtimeOnly("org.ow2.asm:asm:9.2")
+  runtimeOnly("org.ow2.asm:asm:9.3")
 
   testImplementation("junit:junit:4.13.2")
   testImplementation("com.google.truth:truth:1.1.3")

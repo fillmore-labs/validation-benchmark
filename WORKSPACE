@@ -21,19 +21,19 @@ load("//toolchain:defs.bzl", "testonly_artifacts")
 
 maven_install(
     artifacts = [
-        "com.google.errorprone:error_prone_annotations:2.11.0",
+        "com.google.errorprone:error_prone_annotations:2.12.1",
         "com.google.guava:guava:31.1-jre",
         "jakarta.validation:jakarta.validation-api:2.0.2",
-        "org.checkerframework:checker-qual:3.21.3",
-        "org.checkerframework:checker-util:3.21.3",
-        "org.checkerframework:checker:3.21.3",
+        "org.checkerframework:checker-qual:3.21.4",
+        "org.checkerframework:checker-util:3.21.4",
+        "org.checkerframework:checker:3.21.4",
         "org.glassfish:jakarta.el:3.0.4",
         "org.hibernate.validator:hibernate-validator:6.2.3.Final",
         "org.immutables:value-annotations:2.9.0",
         "org.immutables:value-processor:2.9.0",
-        "org.openjdk.jmh:jmh-core:1.34",
-        "org.openjdk.jmh:jmh-generator-annprocess:1.34",
-        "org.ow2.asm:asm:9.2",
+        "org.openjdk.jmh:jmh-core:1.35",
+        "org.openjdk.jmh:jmh-generator-annprocess:1.35",
+        "org.ow2.asm:asm:9.3",
         "org.projectlombok:lombok:1.18.22",
     ] + testonly_artifacts([
         "com.google.truth.extensions:truth-java8-extension:1.1.3",
